@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="dev-classes_net.ultrametrics-0.03">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../tcp/jpcap/jpcap/jpcap.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/javadoc_net.sourceforge.jpcap-0.01.16.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

@@ -5,9 +5,11 @@ import jpcap.JpcapSender;
 import jpcap.NetworkInterface;
 import jpcap.packet.*;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.Date;
 
 import static com.wchstrife.Util.Utils.macByteToString;
 
@@ -19,6 +21,8 @@ public class ARP {
     public static String LOCALIP = "10.18.139.150";
     //本机的MAC
     public static String LOCALMAC = "28-C2-DD-42-B9-D3";
+    //文件输出地址
+    private static String FILEPATH = "./log.txt";
 
     /**
      * 获取本机上所有的网卡，注意选择目前正在使用的网卡
@@ -176,8 +180,33 @@ public class ARP {
                 System.out.println("源IP： " + rp.src_ip);
                 System.out.println("目的IP： " + rp.dst_ip);
                 System.out.println("sqp: " + rp.seq + "id: " + rp.id);
-                System.out.println("Data: " + macByteToString(rp.data));
+                System.out.println("Data: " + macByteToString(rp.data));    //这里调用工具类是为了正常的显示字节数组
                 System.out.println("------------------");
+
+                /**
+                 * 输出到文件
+                 */
+                FileWriter writer = null;
+                Date date = new Date();
+                try {
+                    // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
+                    writer = new FileWriter(FILEPATH, true);
+                    writer.write("------------------" + date.toString() + "------------------" + System.getProperty("line.separator"));
+                    writer.write("源IP： " + rp.src_ip + System.getProperty("line.separator"));
+                    writer.write("目的IP： " + rp.dst_ip + System.getProperty("line.separator"));
+                    writer.write("Data: " + macByteToString(rp.data) +  System.getProperty("line.separator"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if(writer != null){
+                            writer.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
         }
@@ -188,7 +217,7 @@ public class ARP {
     public static void main(String[] args) throws Exception{
         getLocalIPAndMAC();
         getAllDevices();
-        byte[] targetMAC = getMACByIp("10.18.139.164");
-        ping("10.18.139.164", targetMAC);
+        byte[] targetMAC = getMACByIp("10.18.139.146");
+        ping("10.18.139.146", targetMAC);
     }
 }

@@ -1,6 +1,5 @@
 package com.wchstrife;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -13,13 +12,13 @@ import jpcap.NetworkInterface;
 import jpcap.packet.ARPPacket;
 import jpcap.packet.EthernetPacket;
 
-public class ARPTest {
+public class ARPAttackTest {
 
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
         HashMap<String, String> map = new HashMap<String, String>();
-        map = new ARPTest().GetAllMacAddress();
-        ARPTest.SendArp(map);
+        map = new ARPAttackTest().GetAllMacAddress();
+        ARPAttackTest.SendArp(map);
     }
 
     /*

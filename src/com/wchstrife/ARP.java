@@ -1,5 +1,9 @@
 package com.wchstrife;
 
+//import com.wchstrife.Packet.ARPPacket;
+//import com.wchstrife.Packet.EthernetPacket;
+//import com.wchstrife.Packet.ICMPPacket;
+//import com.wchstrife.Packet.EthernetPacket;
 import jpcap.JpcapCaptor;
 import jpcap.JpcapSender;
 import jpcap.NetworkInterface;
@@ -10,6 +14,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Scanner;
 
 import static com.wchstrife.Util.Utils.macByteToString;
 
@@ -18,9 +23,7 @@ public class ARP {
     //当前默认打开的网卡
     public static NetworkInterface DEVICE = JpcapCaptor.getDeviceList()[0];
     //本机的IP
-    public static String LOCALIP = "10.18.139.150";
-    //本机的MAC
-    public static String LOCALMAC = "28-C2-DD-42-B9-D3";
+    public static String LOCALIP = "";
     //文件输出地址
     private static String FILEPATH = "./log.txt";
 
@@ -37,7 +40,7 @@ public class ARP {
       */
      for (NetworkInterface n : devices){
          System.out.println("网卡名称" + n.name + "     |     " + "描述："  + n.description);
-         System.out.println("MAC地址：" + n.mac_address.toString());
+         System.out.println("MAC地址：" + macByteToString(n.mac_address));
      }
 
      System.out.println("-------------------------------------------");
@@ -63,7 +66,7 @@ public class ARP {
         arp.operation = ARPPacket.ARP_REQUEST;  //表示是ARP请求包
         arp.hlen = 6;   //物理地址长度
         arp.plen = 4;   //协议地址长度
-        arp.sender_hardaddr = DEVICE.mac_address; //ARP包的发送端以太网地址,在这里即本地主机地址
+        arp.sender_hardaddr = DEVICE.mac_address; //ARP包的发送端以太网地址,在这里即本地主机MAC地址
         arp.sender_protoaddr = senderIP.getAddress(); //发送端IP地址, 在这里即本地IP地址
 
         //ARP数据字段中目标地址
@@ -72,8 +75,8 @@ public class ARP {
         arp.target_protoaddr = targetIP.getAddress(); //目的端IP地址
 
         //构造以太网首部帧
-        EthernetPacket ether = new EthernetPacket();
-        ether.frametype = EthernetPacket.ETHERTYPE_ARP; //帧类型
+        jpcap.packet.EthernetPacket ether = new jpcap.packet.EthernetPacket();
+        ether.frametype = jpcap.packet.EthernetPacket.ETHERTYPE_ARP; //帧类型
         ether.src_mac = DEVICE.mac_address; //源MAC地址
         ether.dst_mac = broadcast; //以太网目的地址，广播地址
         arp.datalink = ether; //将arp报文的数据链路层的帧设置为刚刚构造的以太帧赋给
@@ -115,6 +118,7 @@ public class ARP {
         //根据网卡获取本机MAC地址
         byte[] mac = DEVICE.mac_address;
 
+        LOCALIP = localIP;
 
         System.out.println("本机名称：" + localName);
         System.out.println("本机IP地址：" + localIP);
@@ -154,7 +158,7 @@ public class ARP {
         EthernetPacket ether = new EthernetPacket();
         ether.frametype = EthernetPacket.ETHERTYPE_IP; //帧类型
         ether.src_mac = DEVICE.mac_address; //源MAC地址
-        ether.dst_mac = mac; //以太网目的地MAC
+        ether.dst_mac = mac; //以太网目的地MAC 是网管MAC
 
         icmpPacket.datalink = ether; //将ICMP报文的数据链路层的帧设置为刚刚构造的以太帧赋给
 
@@ -179,7 +183,7 @@ public class ARP {
                 System.out.println("rcv icmp echo reply");
                 System.out.println("源IP： " + rp.src_ip);
                 System.out.println("目的IP： " + rp.dst_ip);
-                System.out.println("sqp: " + rp.seq + "id: " + rp.id);
+                System.out.println("sqp: " + rp.seq + " id: " + rp.id);
                 System.out.println("Data: " + macByteToString(rp.data));    //这里调用工具类是为了正常的显示字节数组
                 System.out.println("------------------");
 
@@ -217,7 +221,19 @@ public class ARP {
     public static void main(String[] args) throws Exception{
         getLocalIPAndMAC();
         getAllDevices();
-        byte[] targetMAC = getMACByIp("10.18.139.146");
-        ping("10.18.139.146", targetMAC);
+        System.out.println("Enter Wang Guan IP");
+        Scanner scanner = new Scanner(System.in);//输入网管IP
+        String WangGuanIP = scanner.nextLine().toString();
+        try{
+            byte[] wangGuanMAC = getMACByIp(WangGuanIP);
+            System.out.println("Enter Target IP");
+            scanner = new Scanner(System.in);//输入目标IP
+            String targetIP = scanner.nextLine().toString();
+            ping(targetIP, wangGuanMAC);
+        }catch (Exception e){
+            System.out.println("IP ERROR");
+            e.printStackTrace();
+        }
+
     }
 }

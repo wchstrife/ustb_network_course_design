@@ -99,9 +99,9 @@ public class ARP {
                     System.out.println("Hardware type: " + p.hardtype);
                     System.out.println("Prototype type: " + p.prototype);
                     System.out.println("Opcode: " + p.operation);
-                    System.out.println("Sender IP: " + p.sender_protoaddr);
+                    System.out.println("Sender IP: " + macByteToString(p.sender_protoaddr));
                     System.out.println("Sender MAC: " +macByteToString(p.sender_hardaddr));
-                    System.out.println("target IP: " +p.target_protoaddr);
+                    System.out.println("target IP: " +macByteToString(p.target_protoaddr));
                     System.out.println("target MAC: " +macByteToString(p.target_hardaddr));
                     System.out.println("------------ARP---------------");
 
@@ -194,6 +194,7 @@ public class ARP {
                 System.out.println("CheckSum： " + rp.checksum);
                 System.out.println("Sequence： " + rp.seq);
                 System.out.println("Id： " + rp.id);
+                System.out.println("Data： " + macByteToString(rp.data));
                 System.out.println("---------ICMP END---------");
 
                 /**

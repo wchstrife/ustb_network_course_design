@@ -231,8 +231,8 @@ public class ARP {
     public static void main(String[] args) throws Exception{
         getLocalIPAndMAC();
         getAllDevices();
-        System.out.println("Enter Wang Guan IP");
-        Scanner scanner = new Scanner(System.in);//输入网管IP
+        System.out.println("Enter Gateway IP");
+        Scanner scanner = new Scanner(System.in);//输入网关IP
         String WangGuanIP = scanner.nextLine().toString();
         try{
             byte[] wangGuanMAC = getMACByIp(WangGuanIP);

@@ -10,9 +10,11 @@
  6. 抓取ICMP相应的包，过滤之后输出ECHO和REPLY的包
 
 **PS：特别注意**
+
 **在ARP的发送的包中：**
 源IP和源MAC地址是自己本地的IP（172.17.5.6）和MAC地址
 目的IP是网关的IP（172.17.5.1），目的MAC地址是全F（表示广播，此时并不知道目的MAC地址）
+
 **在ICMP的发送的包中：**
 源IP和源MAC地址是自己本地的IP（172.17.5.6）和MAC地址
 目的IP是PC2的IP（172.16.5.7），目的MAC地址是网关的MAC（也就是之前ARP获得的MAC地址）
@@ -25,11 +27,16 @@
 ## 二、项目结构
 ![这里写图片描述](https://img-blog.csdn.net/20180527192659715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djaHN0cmlmZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-**Packet包**：下面所有的Packet来源于Jpcap的源码，是各个报文的字段的属性，在这个项目中并没有用到
-**Util包：**下面是将byte[]转化为int方便输出的工具类
-**ARP：**程序的入口，运行Main函数即可运行
+**Packet包:** 下面所有的Packet来源于Jpcap的源码，是各个报文的字段的属性，在这个项目中并没有用到
+
+**Util包：** 下面是将byte[]转化为int方便输出的工具类
+
+**ARP：** 程序的入口，运行Main函数即可运行
+
 **JpcapPacket：** demo程序，用于检测环境是否搭配好
-**ARPAttackTest、ARPCheatAttack：**用于测试ARP攻击
+
+**ARPAttackTest、ARPCheatAttack：** 用于测试ARP攻击
+
 
 ## 三、运行
 1. 搭建开发环境：[如何搭建开发环境](https://blog.csdn.net/wchstrife/article/details/79922073)

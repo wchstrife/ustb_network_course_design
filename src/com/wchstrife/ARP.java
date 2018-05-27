@@ -1,9 +1,5 @@
 package com.wchstrife;
 
-//import com.wchstrife.Packet.ARPPacket;
-//import com.wchstrife.Packet.EthernetPacket;
-//import com.wchstrife.Packet.ICMPPacket;
-//import com.wchstrife.Packet.EthernetPacket;
 import jpcap.JpcapCaptor;
 import jpcap.JpcapSender;
 import jpcap.NetworkInterface;
